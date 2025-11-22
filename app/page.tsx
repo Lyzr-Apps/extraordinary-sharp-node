@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Search, RotateCw, Shuffle, CheckCircle, XCircle } from 'lucide-react'
+import { Search, RotateCw, Shuffle, CheckCircle, XCircle, Beaker, BookOpen, Cpu, Trophy, Clapperboard, Brain, Globe, BookMarked } from 'lucide-react'
 
 // Types
 interface QuizTopic {
@@ -16,7 +16,7 @@ interface QuizTopic {
   name: string
   description: string
   difficulty: 'Easy' | 'Medium' | 'Hard'
-  icon: string
+  icon: React.ReactNode
 }
 
 interface Question {
@@ -59,56 +59,56 @@ const SAMPLE_TOPICS: QuizTopic[] = [
     name: 'Science',
     description: 'Test your knowledge of physics, chemistry, and biology',
     difficulty: 'Medium',
-    icon: '🔬'
+    icon: <Beaker className="w-8 h-8" />
   },
   {
     id: '2',
     name: 'History',
     description: 'Explore historical events, figures, and civilizations',
     difficulty: 'Hard',
-    icon: '📚'
+    icon: <BookOpen className="w-8 h-8" />
   },
   {
     id: '3',
     name: 'Technology',
     description: 'Stay updated with tech innovations and concepts',
     difficulty: 'Medium',
-    icon: '💻'
+    icon: <Cpu className="w-8 h-8" />
   },
   {
     id: '4',
     name: 'Sports',
     description: 'Engage with sports facts, teams, and athletes',
     difficulty: 'Easy',
-    icon: '⚽'
+    icon: <Trophy className="w-8 h-8" />
   },
   {
     id: '5',
     name: 'Entertainment',
     description: 'Discover facts about movies, music, and celebrities',
     difficulty: 'Easy',
-    icon: '🎬'
+    icon: <Clapperboard className="w-8 h-8" />
   },
   {
     id: '6',
     name: 'General Knowledge',
     description: 'Mix of facts from various domains',
     difficulty: 'Medium',
-    icon: '🧠'
+    icon: <Brain className="w-8 h-8" />
   },
   {
     id: '7',
     name: 'Geography',
     description: 'Journey across continents and cultures',
     difficulty: 'Medium',
-    icon: '🌍'
+    icon: <Globe className="w-8 h-8" />
   },
   {
     id: '8',
     name: 'Literature',
     description: 'Test your knowledge of classic and modern books',
     difficulty: 'Hard',
-    icon: '📖'
+    icon: <BookMarked className="w-8 h-8" />
   }
 ]
 
@@ -400,19 +400,19 @@ export default function QuizMaster() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-slate-900 shadow-sm border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
                 Q
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">QuizMaster</h1>
+              <h1 className="text-2xl font-bold text-white">QuizMaster</h1>
             </div>
             {state.screen === 'quiz' && (
-              <div className="text-lg font-semibold text-gray-700">
+              <div className="text-lg font-semibold text-gray-300">
                 Score: {Object.keys(state.userAnswers).length}/{state.questions.length}
               </div>
             )}
@@ -427,27 +427,27 @@ export default function QuizMaster() {
           <div className="space-y-8">
             {/* Introduction */}
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold text-gray-900">Test Your Knowledge</h2>
-              <p className="text-xl text-gray-600">Select a topic and challenge yourself with engaging quiz questions</p>
+              <h2 className="text-4xl font-bold text-white">Test Your Knowledge</h2>
+              <p className="text-xl text-gray-400">Select a topic and challenge yourself with engaging quiz questions</p>
             </div>
 
             {/* Search Bar */}
             <div className="flex gap-3 max-w-md mx-auto">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                <Search className="absolute left-3 top-3 text-gray-500" size={20} />
                 <Input
                   type="text"
                   placeholder="Search topics..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-11"
+                  className="pl-10 h-11 bg-slate-800 border-slate-700 text-white placeholder-gray-500"
                 />
               </div>
               <Button
                 onClick={selectRandomTopic}
                 variant="outline"
                 size="lg"
-                className="flex gap-2"
+                className="flex gap-2 border-slate-700 text-gray-300 hover:bg-slate-800"
                 disabled={state.loading}
               >
                 <Shuffle size={20} />
@@ -457,9 +457,9 @@ export default function QuizMaster() {
 
             {/* Error Message */}
             {state.error && (
-              <Card className="bg-red-50 border-red-200">
+              <Card className="bg-red-950 border-red-800">
                 <CardContent className="pt-6">
-                  <p className="text-red-800">{state.error}</p>
+                  <p className="text-red-200">{state.error}</p>
                 </CardContent>
               </Card>
             )}
@@ -470,22 +470,22 @@ export default function QuizMaster() {
                 filteredTopics.map(topic => (
                   <Card
                     key={topic.id}
-                    className="hover:shadow-lg hover:scale-105 transition-all duration-200 cursor-pointer"
+                    className="bg-slate-800 border-slate-700 hover:shadow-lg hover:scale-105 transition-all duration-200 cursor-pointer hover:border-slate-600"
                     onClick={() => startQuiz(topic)}
                   >
                     <CardHeader>
-                      <div className="text-4xl mb-3">{topic.icon}</div>
-                      <CardTitle className="text-xl">{topic.name}</CardTitle>
-                      <CardDescription>{topic.description}</CardDescription>
+                      <div className="text-blue-400 mb-3">{topic.icon}</div>
+                      <CardTitle className="text-xl text-white">{topic.name}</CardTitle>
+                      <CardDescription className="text-gray-400">{topic.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-between items-center">
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                           topic.difficulty === 'Easy'
-                            ? 'bg-green-100 text-green-800'
+                            ? 'bg-green-950 text-green-300'
                             : topic.difficulty === 'Medium'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-red-100 text-red-800'
+                            ? 'bg-yellow-950 text-yellow-300'
+                            : 'bg-red-950 text-red-300'
                         }`}>
                           {topic.difficulty}
                         </span>
@@ -502,7 +502,7 @@ export default function QuizMaster() {
                 ))
               ) : (
                 <div className="col-span-full text-center py-12">
-                  <p className="text-gray-600 text-lg">No topics found matching your search</p>
+                  <p className="text-gray-400 text-lg">No topics found matching your search</p>
                 </div>
               )}
             </div>
@@ -514,7 +514,7 @@ export default function QuizMaster() {
           <div className="max-w-2xl mx-auto space-y-6">
             {/* Progress Section */}
             <div className="space-y-3">
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex justify-between text-sm text-gray-400">
                 <span>Question {state.currentQuestionIndex + 1} of {state.questions.length}</span>
                 <span>{state.selectedTopic?.name}</span>
               </div>
@@ -525,9 +525,9 @@ export default function QuizMaster() {
             </div>
 
             {/* Question Card */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-slate-800 border-slate-700 shadow-lg">
               <CardContent className="pt-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-8">
+                <h3 className="text-2xl font-bold text-white mb-8">
                   {state.questions[state.currentQuestionIndex].question_text}
                 </h3>
 
@@ -540,14 +540,14 @@ export default function QuizMaster() {
                           key={key}
                           className={`flex items-center p-4 rounded-lg border-2 transition-all cursor-pointer ${
                             selectedAnswer === key
-                              ? 'border-blue-600 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-blue-500 bg-slate-700'
+                              : 'border-slate-700 hover:border-slate-600'
                           }`}
                         >
                           <RadioGroupItem value={key} id={key} className="w-5 h-5" />
                           <Label
                             htmlFor={key}
-                            className="flex-1 ml-3 cursor-pointer text-gray-900 font-medium"
+                            className="flex-1 ml-3 cursor-pointer text-white font-medium"
                           >
                             {key}. {value}
                           </Label>
@@ -563,29 +563,29 @@ export default function QuizMaster() {
             {feedbackQuestion && (
               <Card className={`${
                 feedbackQuestion.is_correct
-                  ? 'bg-green-50 border-green-200'
-                  : 'bg-red-50 border-red-200'
+                  ? 'bg-green-950 border-green-800'
+                  : 'bg-red-950 border-red-800'
               }`}>
                 <CardContent className="pt-6">
                   <div className="flex gap-4">
-                    <div className="text-2xl">
+                    <div>
                       {feedbackQuestion.is_correct ? (
-                        <CheckCircle className="text-green-600" size={28} />
+                        <CheckCircle className="text-green-400" size={28} />
                       ) : (
-                        <XCircle className="text-red-600" size={28} />
+                        <XCircle className="text-red-400" size={28} />
                       )}
                     </div>
                     <div className="flex-1 space-y-2">
                       <p className={`font-semibold ${
                         feedbackQuestion.is_correct
-                          ? 'text-green-900'
-                          : 'text-red-900'
+                          ? 'text-green-300'
+                          : 'text-red-300'
                       }`}>
                         {feedbackQuestion.is_correct ? 'Correct!' : 'Incorrect'}
                       </p>
-                      <p className="text-gray-700">{feedbackQuestion.explanation}</p>
+                      <p className="text-gray-300">{feedbackQuestion.explanation}</p>
                       {!feedbackQuestion.is_correct && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-400">
                           Correct answer: <span className="font-semibold">{feedbackQuestion.correct_answer}</span>
                         </p>
                       )}
@@ -609,7 +609,7 @@ export default function QuizMaster() {
                   <Button
                     onClick={skipQuestion}
                     variant="outline"
-                    className="flex-1 h-12 text-base font-semibold"
+                    className="flex-1 h-12 text-base font-semibold border-slate-700 text-gray-300 hover:bg-slate-800"
                   >
                     Skip Question
                   </Button>
@@ -628,14 +628,14 @@ export default function QuizMaster() {
 
             {/* Error Message */}
             {state.error && (
-              <Card className="bg-red-50 border-red-200">
+              <Card className="bg-red-950 border-red-800">
                 <CardContent className="pt-6">
-                  <p className="text-red-800">{state.error}</p>
+                  <p className="text-red-200">{state.error}</p>
                   <Button
                     onClick={() => setState(prev => ({ ...prev, error: null }))}
                     variant="outline"
                     size="sm"
-                    className="mt-3"
+                    className="mt-3 border-slate-700 text-gray-300 hover:bg-slate-800"
                   >
                     Dismiss
                   </Button>
@@ -649,7 +649,7 @@ export default function QuizMaster() {
         {state.screen === 'results' && results && (
           <div className="max-w-2xl mx-auto space-y-8">
             {/* Score Card */}
-            <Card className="bg-gradient-to-br from-blue-500 to-purple-600 text-white border-none shadow-xl">
+            <Card className="bg-gradient-to-br from-blue-600 to-purple-700 text-white border-none shadow-xl">
               <CardContent className="pt-12 text-center space-y-6">
                 <div>
                   <p className="text-6xl font-bold mb-2">
@@ -668,31 +668,31 @@ export default function QuizMaster() {
 
             {/* Statistics */}
             <div className="grid grid-cols-3 gap-4">
-              <Card>
+              <Card className="bg-slate-800 border-slate-700">
                 <CardContent className="pt-6 text-center">
-                  <p className="text-3xl font-bold text-green-600">{results.correct_answers}</p>
-                  <p className="text-sm text-gray-600 mt-2">Correct</p>
+                  <p className="text-3xl font-bold text-green-400">{results.correct_answers}</p>
+                  <p className="text-sm text-gray-400 mt-2">Correct</p>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="bg-slate-800 border-slate-700">
                 <CardContent className="pt-6 text-center">
-                  <p className="text-3xl font-bold text-red-600">{results.total_questions - results.correct_answers - results.skipped_questions}</p>
-                  <p className="text-sm text-gray-600 mt-2">Incorrect</p>
+                  <p className="text-3xl font-bold text-red-400">{results.total_questions - results.correct_answers - results.skipped_questions}</p>
+                  <p className="text-sm text-gray-400 mt-2">Incorrect</p>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="bg-slate-800 border-slate-700">
                 <CardContent className="pt-6 text-center">
-                  <p className="text-3xl font-bold text-yellow-600">{results.skipped_questions}</p>
-                  <p className="text-sm text-gray-600 mt-2">Skipped</p>
+                  <p className="text-3xl font-bold text-yellow-400">{results.skipped_questions}</p>
+                  <p className="text-sm text-gray-400 mt-2">Skipped</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Detailed Review */}
-            <Card>
+            <Card className="bg-slate-800 border-slate-700">
               <CardHeader>
-                <CardTitle>Detailed Review</CardTitle>
-                <CardDescription>Review all your answers and learn from each question</CardDescription>
+                <CardTitle className="text-white">Detailed Review</CardTitle>
+                <CardDescription className="text-gray-400">Review all your answers and learn from each question</CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full space-y-2">
@@ -707,22 +707,28 @@ export default function QuizMaster() {
                         value={`q-${question.question_id}`}
                         className={`px-4 rounded-lg border ${
                           isSkipped
-                            ? 'border-yellow-200 bg-yellow-50'
+                            ? 'border-yellow-900 bg-yellow-950'
                             : isCorrect
-                            ? 'border-green-200 bg-green-50'
-                            : 'border-red-200 bg-red-50'
+                            ? 'border-green-900 bg-green-950'
+                            : 'border-red-900 bg-red-950'
                         }`}
                       >
                         <AccordionTrigger className="hover:no-underline py-4">
                           <div className="flex items-center gap-3 text-left">
-                            <div className="text-lg font-semibold">
+                            <div className={`text-lg font-semibold ${
+                              isSkipped
+                                ? 'text-yellow-400'
+                                : isCorrect
+                                ? 'text-green-400'
+                                : 'text-red-400'
+                            }`}>
                               {isSkipped ? '—' : isCorrect ? '✓' : '✗'}
                             </div>
                             <div className="flex-1">
-                              <p className="font-semibold text-gray-900">
+                              <p className="font-semibold text-white">
                                 Question {index + 1}
                               </p>
-                              <p className="text-sm text-gray-600 mt-1">
+                              <p className="text-sm text-gray-400 mt-1">
                                 {question.question_text}
                               </p>
                             </div>
@@ -730,24 +736,24 @@ export default function QuizMaster() {
                         </AccordionTrigger>
                         <AccordionContent className="pb-4 space-y-3">
                           <div>
-                            <p className="text-sm font-semibold text-gray-700 mb-2">Your Answer:</p>
+                            <p className="text-sm font-semibold text-gray-300 mb-2">Your Answer:</p>
                             {isSkipped ? (
-                              <p className="text-sm text-yellow-800">Skipped</p>
+                              <p className="text-sm text-yellow-300">Skipped</p>
                             ) : (
-                              <p className="text-sm text-gray-700">
+                              <p className="text-sm text-gray-300">
                                 {userAnswer}. {question.options[userAnswer as keyof typeof question.options]}
                               </p>
                             )}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-gray-700 mb-2">Correct Answer:</p>
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm font-semibold text-gray-300 mb-2">Correct Answer:</p>
+                            <p className="text-sm text-gray-300">
                               {question.correct_answer}. {question.options[question.correct_answer as keyof typeof question.options]}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-gray-700 mb-2">Explanation:</p>
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm font-semibold text-gray-300 mb-2">Explanation:</p>
+                            <p className="text-sm text-gray-400">
                               This question tests your understanding of {question.question_text.split('?')[0].toLowerCase()}.
                             </p>
                           </div>
@@ -772,7 +778,7 @@ export default function QuizMaster() {
               <Button
                 onClick={selectNewTopic}
                 variant="outline"
-                className="flex-1 h-12 text-base font-semibold"
+                className="flex-1 h-12 text-base font-semibold border-slate-700 text-gray-300 hover:bg-slate-800"
                 disabled={state.loading}
               >
                 Try New Topic
