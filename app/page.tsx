@@ -161,7 +161,8 @@ export default function QuizMaster() {
       const data = await response.json()
 
       if (!data.success) {
-        throw new Error('Failed to generate questions')
+        const errorMsg = data.error || data.details || 'Failed to generate questions'
+        throw new Error(errorMsg)
       }
 
       // Parse the response - handle multiple fallback strategies
@@ -228,7 +229,8 @@ export default function QuizMaster() {
       const data = await response.json()
 
       if (!data.success) {
-        throw new Error('Failed to evaluate answer')
+        const errorMsg = data.error || data.details || 'Failed to evaluate answer'
+        throw new Error(errorMsg)
       }
 
       // Parse feedback response with multiple fallbacks
@@ -322,7 +324,8 @@ export default function QuizMaster() {
       const data = await response.json()
 
       if (!data.success) {
-        throw new Error('Failed to calculate score')
+        const errorMsg = data.error || data.details || 'Failed to calculate score'
+        throw new Error(errorMsg)
       }
 
       // Parse score response with multiple fallbacks

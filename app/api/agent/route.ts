@@ -89,7 +89,38 @@ export async function POST(request: NextRequest) {
     })
 
     if (response.ok) {
-      const data = await response.json()
+      // Check content-type before parsing as JSON
+      const contentType = response.headers.get('content-type') || ''
+      let data
+
+      try {
+        if (contentType.includes('application/json')) {
+          data = await response.json()
+        } else {
+          // If not JSON, get as text first
+          const text = await response.text()
+          // Try to parse the text as JSON
+          try {
+            data = JSON.parse(text)
+          } catch {
+            // If it's HTML or plain text, wrap it in a response object
+            data = {
+              response: text,
+              status: 'text'
+            }
+          }
+        }
+      } catch (parseError) {
+        console.error('Error parsing response:', parseError)
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Failed to parse API response',
+            details: parseError instanceof Error ? parseError.message : 'Unknown parse error',
+          },
+          { status: 500 }
+        )
+      }
 
       // BULLETPROOF JSON PARSING with multiple strategies
       let parsedResponse = data.response
@@ -181,7 +212,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: `API returned status ${response.status}`,
-          details: errorText,
+          details: errorText.substring(0, 500), // Limit error details
         },
         { status: response.status }
       )
